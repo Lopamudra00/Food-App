@@ -1,0 +1,4 @@
+.restroCards{
+    display: flex ;
+    flex-wrap: wrap;
+}
