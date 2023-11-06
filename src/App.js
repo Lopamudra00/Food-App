@@ -1,27 +1,44 @@
 import './App.css';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import Body from './components/Body/Body';
 import Header from './components/Header/Header';
 import Error from './components/Error/Error';
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import Contact from './components/Contact/Contact';
 import RestaurantMenu from './components/RestaurantMenu/RestaurantMenu';
+import Cart from './components/Cart/Cart';
 import Profile from './components/Profile/Profile';
 import Shimmer from './components/Shimmer/Shimmer';
-
+import UserContext from './utils/UserContext';
+import { Provider } from 'react-redux'
+import store from './utils/store';
 
 const Instamart = lazy(() => import('./components/Instamart/Instamart'))
 
 const About = lazy(() => import('./components/About/About'))
 
 function App() {
+  const [user, setUser] = useState({
+    name: 'Lopamudra Mallick',
+    email: 'lopamudramallick369@gmail.com'
+  })
   return (
-    <div className="App">
-      <Header />
-      <Outlet />
-      {/* all children moved to outlet */}
+    <Provider store={store}>
+      <UserContext.Provider
+        //this will override the default value
+        value={{
+          user: user,
+          setUser: setUser,
+        }}
+      >
+        <div className="App">
+          <Header />
+          <Outlet />
+          {/* all children moved to outlet */}
+        </div>
+      </UserContext.Provider>
+    </Provider>
 
-    </div>
   );
 }
 export const appRoute = createBrowserRouter([
@@ -66,7 +83,13 @@ export const appRoute = createBrowserRouter([
           <Instamart />
         </Suspense>,
         errorElement: <Error />
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+        errorElement: <Error />
       }
+
     ]
   }
 ])

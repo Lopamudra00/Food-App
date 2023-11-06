@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import './Header.css'
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
+// import UserContext from '../../utils/UserContext';
+import { useSelector } from 'react-redux';
 const Title = () => {
     return (
         // anchor tag to go to the home page on clicking the logo
@@ -12,6 +13,8 @@ const Title = () => {
 
 const Header = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
+    // const { user } = useContext(UserContext);
+    const cartItems = useSelector(store => store.cart.items);
 
     return (
         <div className="h-20 w-full	 flex justify-between bg-amber-500 shadow-xl ">
@@ -21,7 +24,7 @@ const Header = () => {
                     <Link to='/'><li className='px-3 font-sans hover:font-serif font-semibold'>Home</li> </Link>
                     <Link to="/about"><li className='px-3 font-sans hover:font-serif font-semibold'>About</li></Link>
                     <Link to="/contact"><li className='px-3 font-sans hover:font-serif font-semibold'>Contact Us</li></Link>
-                    <Link> <li className='px-3 font-sans hover:font-serif font-semibold'>  Cart</li></Link>
+                    <Link to="/cart"> <li className='px-3 font-sans hover:font-serif font-semibold'>  Cart-{cartItems.length} </li></Link>
 
                     <Link to="/instamart"><li className='px-3 font-sans hover:font-serif font-semibold'>Instamart</li></Link>
                 </ul>

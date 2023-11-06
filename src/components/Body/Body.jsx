@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
-import './Body.css'
+import React, { useContext, useEffect, useState } from "react";
 import RestroCard from "./RestroCard/RestroCard";
 import Shimmer from "../Shimmer/Shimmer";
 import { filterData } from "../../utils/shared";
 import { Link } from "react-router-dom";
 import useOnline from "../../utils/useOnline";
-
+import UserContext from "../../utils/UserContext";
 const Body = () => {
-    const [allRestaurant, setAllRestaurant] = useState([]);
     const [searchText, setSearchText] = useState("");
+    const [allRestaurant, setAllRestaurant] = useState([]);
     const [filteredRestaurant, setFilteredRestaurant] = useState([]);
+    const { user, setUser } = useContext(UserContext);
     console.log("render()")
     useEffect(() => {
-        //API Call
         getRestaurants();
     }, []);
 
@@ -33,10 +32,10 @@ const Body = () => {
     return (filteredRestaurant.length === 0) ? <Shimmer /> :
         (
             <>
-                <div className="search-bar">
+                <div className=" pl-5 ml-9 h-15 m-5 border-slate-400	 search-bar">
                     <input
                         type="text"
-                        className="search-input"
+                        className="h-10 p-2 rounded-md border-2 border-slate-500"
                         placeholder="Search"
                         value={searchText}
                         onChange={(e) => {
@@ -48,9 +47,20 @@ const Body = () => {
                             const data = filterData(searchText, allRestaurant);
                             setFilteredRestaurant(data);
                         }}
-                        className="search-btn">Search</button>
+                        className="ml-10 mt-20 -mb-8 font-semibold font-sans h-10 w-24 rounded-xl  py-1 bg-amber-200 p-3 drop-shadow-md">Search</button>
+
+                    <input value={user.name}
+                        onChange={(e) => {
+                            setUser({
+                                name: e.target.value,
+                                email: "new@gmail.com"
+                            })
+                        }}
+
+
+                    ></input>
                 </div>
-                <div className="restroCards">
+                <div className="flex flex-wrap items-center justify-self-center mx-9 mt-10">
                     {
                         filteredRestaurant.map((res) => {
                             return (
